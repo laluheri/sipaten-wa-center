@@ -1,0 +1,3 @@
+const form=document.querySelector("#login-form"),button=document.querySelector("#login-button"),result=document.querySelector("#login-result");
+fetch("/api/auth/me").then(r=>{if(r.ok)location.href="/dashboard"});
+form.addEventListener("submit",async e=>{e.preventDefault();button.disabled=true;button.textContent="Memeriksa…";result.textContent="";try{const r=await fetch("/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.fromEntries(new FormData(form)))}),data=await r.json();if(!r.ok)throw new Error(data.message);location.href="/dashboard"}catch(e){result.className="send-result error";result.textContent=e.message||"Login gagal."}finally{button.disabled=false;button.textContent="Masuk"}});
